@@ -1,0 +1,10 @@
+#pragma once
+
+class RecordCollection
+{
+public:
+    RecordCollection();
+    
+private:
+    using RecordsContainer = std::unordered_map<>
+};
