@@ -1,7 +1,7 @@
 #pragma once
 
+#include <set>
 #include <string>
-#include <vector>
 #include <unordered_map>
 
 #include "Record.h"
@@ -16,10 +16,12 @@ public:
 
     RecordCollection FindMatchingRecords(const std::string& columnName, const std::string& matchString) const;
 
+    void DeleteRecordByID(unsigned id);
+
 private:
     std::unordered_map<unsigned, Record> recordsStorge_;
 
-    using IdList = std::vector<unsigned>;
-    using IdsCollection = std::unordered_map<std::string, IdList>;
+    using IdSet = std::set<unsigned>;
+    using IdsCollection = std::unordered_map<std::string, IdSet>;
     std::unordered_map<std::string, IdsCollection> serchIndex_;
 };
