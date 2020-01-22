@@ -1,10 +1,12 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include <assert.h>
+#include <cassert>
 #include <chrono>
 #include <iostream>
 #include <ratio>
+
+#include "RecordCollection.h"
 
 /**
     Represents a Record Object
@@ -28,7 +30,7 @@ typedef std::vector<QBRecord> QBRecordCollection;
     matchString - the string to search for
 */
 QBRecordCollection QBFindMatchingRecords(const QBRecordCollection& records, const std::string& columnName, const std::string& matchString)
-    {
+{
     QBRecordCollection result;
     std::copy_if(records.begin(), records.end(), std::back_inserter(result), [&](QBRecord rec){
         if (columnName == "column0") {
@@ -46,7 +48,7 @@ QBRecordCollection QBFindMatchingRecords(const QBRecordCollection& records, cons
         }
     });
     return result;
-    }
+}
 
 /**
     Utility to populate a record collection
@@ -54,27 +56,45 @@ QBRecordCollection QBFindMatchingRecords(const QBRecordCollection& records, cons
     numRecords - number of records to populate in the collection
 */
 QBRecordCollection populateDummyData(const std::string& prefix, int numRecords)
-    {
+{
     QBRecordCollection data;
     data.reserve(numRecords);
     for (uint i = 0; i < numRecords; i++)
-        {
+    {
         QBRecord rec = { i, prefix + std::to_string(i), i % 100, std::to_string(i) + prefix };
         data.emplace_back(rec);
-        }
-    return data;
     }
+    return data;
+}
+
+RecordCollection myPopulateDummyData(const std::string& prefix, int numRecords)
+{
+    RecordCollection data;
+    for (uint i = 0; i < numRecords; i++)
+    {
+        Record rec = { i, prefix + std::to_string(i), i % 100, std::to_string(i) + prefix };
+        data.Add(rec);
+    }
+    return data;
+}
+
 
 int main()
 {
     using namespace std::chrono;
     // populate a bunch of data
     auto data = populateDummyData("testdata", 1000);
+    auto myData = myPopulateDummyData("testdata", 1000);
     // Find a record that contains and measure the perf
     auto startTimer = steady_clock::now();
     auto filteredSet = QBFindMatchingRecords(data, "column1", "testdata500");
     auto filteredSet2 = QBFindMatchingRecords(data, "column2", "24");
     std::cout << "profiler: " << double((steady_clock::now() - startTimer).count()) * steady_clock::period::num / steady_clock::period::den << std::endl;
+
+    startTimer = steady_clock::now();
+    auto myFilteredSet = myData.FindMatchingRecords("column1", "testdata500");
+    auto myFilteredSet2 = myData.FindMatchingRecords("column2", "24");
+    std::cout << "profiler 2: " << double((steady_clock::now() - startTimer).count()) * steady_clock::period::num / steady_clock::period::den << std::endl;
 
     // make sure that the function is correct
     assert(filteredSet.size() == 1);

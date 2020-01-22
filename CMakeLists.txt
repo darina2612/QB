@@ -7,3 +7,5 @@ set(CMAKE_AUTOMOC ON)
 
 add_executable(${PROJECT_NAME} "main.cpp"
                                "RecordCollection.cpp")
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
