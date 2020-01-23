@@ -18,8 +18,10 @@ bool RecordCollection::Add(const Record& record)
         return false;
     }
 
+    //add the record to the storage
     recordsStorge_[record.column0] = record;
 
+    //add values info to the search index
     searchIndex_[column1][record.column1].emplace(id);
     searchIndex_[column2][std::to_string(record.column2)].emplace(id);
     searchIndex_[column3][record.column3].emplace(id);
