@@ -9,14 +9,13 @@ const char* RecordCollection::column1 = "column1";
 const char* RecordCollection::column2 = "column2";
 const char* RecordCollection::column3 = "column3";
 
-void RecordCollection::Add(const Record& record)
+bool RecordCollection::Add(const Record& record)
 {
     const auto& id = record.column0;
     auto it = recordsStorge_.find(id);
     if(it != recordsStorge_.end())
     {
-        assert(false);
-        return;
+        return false;
     }
 
     recordsStorge_[record.column0] = record;
@@ -24,6 +23,8 @@ void RecordCollection::Add(const Record& record)
     searchIndex_[column1][record.column1].emplace(id);
     searchIndex_[column2][std::to_string(record.column2)].emplace(id);
     searchIndex_[column3][record.column3].emplace(id);
+
+    return true;
 }
 
 RecordCollection RecordCollection::FindMatchingRecords(const std::string& columnName,

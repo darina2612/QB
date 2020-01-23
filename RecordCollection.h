@@ -12,7 +12,7 @@ class RecordCollection
 public:
     RecordCollection() = default;
 
-    void Add(const Record& record);
+    bool Add(const Record& record);
 
     RecordCollection FindMatchingRecords(const std::string& columnName, const std::string& matchString) const;
 
