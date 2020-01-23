@@ -6,6 +6,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
 add_executable(${PROJECT_NAME} "main.cpp"
-                               "RecordCollection.cpp")
+                               "RecordCollection.cpp"
+                               "QBRecordCollection.cpp")
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)

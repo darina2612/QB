@@ -3,6 +3,12 @@
 #include <cassert>
 #include "Record.h"
 
+
+const char* RecordCollection::column0 = "column0";
+const char* RecordCollection::column1 = "column1";
+const char* RecordCollection::column2 = "column2";
+const char* RecordCollection::column3 = "column3";
+
 void RecordCollection::Add(const Record& record)
 {
     const auto& id = record.column0;
@@ -15,9 +21,9 @@ void RecordCollection::Add(const Record& record)
 
     recordsStorge_[record.column0] = record;
 
-    serchIndex_["column1"][record.column1].emplace(id);
-    serchIndex_["column2"][std::to_string(record.column2)].emplace(id);
-    serchIndex_["column3"][record.column3].emplace(id);
+    searchIndex_[column1][record.column1].emplace(id);
+    searchIndex_[column2][std::to_string(record.column2)].emplace(id);
+    searchIndex_[column3][record.column3].emplace(id);
 }
 
 RecordCollection RecordCollection::FindMatchingRecords(const std::string& columnName,
@@ -26,14 +32,14 @@ RecordCollection RecordCollection::FindMatchingRecords(const std::string& column
     RecordCollection resultCollection{};
 
     IdSet matchingIds{};
-    if(columnName == "column0")
+    if(columnName == column0)
     {
-        matchingIds.emplace(std::stoi(matchString));
+        matchingIds.emplace(std::stoul(matchString));
     }
     else
     {
-        auto it = serchIndex_.find(columnName);
-        if(it != serchIndex_.end())
+        auto it = searchIndex_.find(columnName);
+        if(it != searchIndex_.end())
         {
             auto innerIt = it->second.find(matchString);
             if(innerIt != it->second.end())
@@ -53,10 +59,16 @@ RecordCollection RecordCollection::FindMatchingRecords(const std::string& column
     return resultCollection;
 }
 
-void RecordCollection::DeleteRecordByID(unsigned id)
+void RecordCollection::DeleteRecordByID(uint id)
 {
     auto it = recordsStorge_.find(id);
 
     if(it != recordsStorge_.end())
         recordsStorge_.erase(it);
 }
+
+size_t RecordCollection::Size() const
+{
+    return recordsStorge_.size();
+}
+

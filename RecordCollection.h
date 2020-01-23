@@ -16,12 +16,19 @@ public:
 
     RecordCollection FindMatchingRecords(const std::string& columnName, const std::string& matchString) const;
 
-    void DeleteRecordByID(unsigned id);
+    void DeleteRecordByID(uint id);
+
+    size_t Size() const;
 
 private:
-    std::unordered_map<unsigned, Record> recordsStorge_;
+    std::unordered_map<uint, Record> recordsStorge_;
 
-    using IdSet = std::set<unsigned>;
+    using IdSet = std::set<uint>;
     using IdsCollection = std::unordered_map<std::string, IdSet>;
-    std::unordered_map<std::string, IdsCollection> serchIndex_;
+    std::unordered_map<std::string, IdsCollection> searchIndex_;
+
+    static const char* column0;
+    static const char* column1;
+    static const char* column2;
+    static const char* column3;
 };
