@@ -1,7 +1,7 @@
 #pragma once
 
-#include <set>
 #include <string>
+#include <unordered_set>
 #include <unordered_map>
 
 #include "Record.h"
@@ -23,7 +23,7 @@ public:
 private:
     std::unordered_map<uint, Record> recordsStorge_;
 
-    using IdSet = std::set<uint>;
+    using IdSet = std::unordered_set<uint>;
     using IdsCollection = std::unordered_map<std::string, IdSet>;
     std::unordered_map<std::string, IdsCollection> searchIndex_;
 
